@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buku Tamu Kantor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px 15px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Animasi background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 50px 50px;
+      animation: moveBackground 20s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes moveBackground {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(50px, 50px); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 25px 20px;
+      border-radius: 25px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      max-width: 500px;
+      margin: 0 auto;
+      animation: slideUp 0.6s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .icon-wrapper {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .icon-wrapper::before {
+      content: '📖';
+      font-size: 35px;
+      animation: rotate 3s ease-in-out infinite;
+    }
+
+    @keyframes rotate {
+      0%, 100% { transform: rotate(-5deg); }
+      50% { transform: rotate(5deg); }
+    }
+
+    h1 {
+      font-size: 24px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .label-icon {
+      font-size: 16px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 14px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      background: #fff;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+      transform: translateY(-2px);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 16px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    button:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    button span {
+      position: relative;
+      z-index: 1;
+    }
+
+    .success, .error {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 14px;
+      text-align: center;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .success {
+      background: linear-gradient(135deg, #11998e, #38ef7d);
+      color: white;
+      box-shadow: 0 5px 15px rgba(17, 153, 142, 0.3);
+    }
+
+    .error {
+      background: linear-gradient(135deg, #eb3349, #f45c43);
+      color: white;
+      box-shadow: 0 5px 15px rgba(235, 51, 73, 0.3);
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #667eea;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Responsif untuk HP kecil */
+    @media (max-width: 360px) {
+      .container {
+        padding: 20px 15px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      .icon-wrapper {
+        width: 60px;
+        height: 60px;
+      }
+
+      .icon-wrapper::before {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="icon-wrapper"></div>
+      <h1>Buku Tamu Digital</h1>
+      <p class="subtitle">Silakan isi data kunjungan Anda</p>
+    </div>
+
+    <form id="bukuTamuForm">
+      <div class="form-group">
+        <label><span class="label-icon"></span> Nama Lengkap</label>
+        <input type="text" name="nama" placeholder="Masukkan nama lengkap" required>
+      </div>
+
+      <div class="form-group">
+        <label><span class="label-icon"></span> Instansi / Asal</label>
+        <input type="text" name="instansi" placeholder="Nama perusahaan/instansi" required>
+      </div>
+
+      <div class="form-group">
+        <label><span class="label-icon"></span> Nomor HP</label>
+        <input type="tel" name="nohp" placeholder="08xx xxxx xxxx" required>
+      </div>
+
+      <div class="form-group">
+        <label><span class="label-icon"></span> Keperluan</label>
+        <textarea name="keperluan" placeholder="Jelaskan keperluan kunjungan Anda..." required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label><span class="label-icon"></span> Waktu Kunjungan</label>
+        <input type="datetime-local" name="waktukunjungan" required readonly style="background: #f5f5f5; cursor: not-allowed;">
+      </div>
+
+      <button type="submit">
+        <span>✨ Kirim Data Kunjungan</span>
+      </button>
+    </form>
+
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+    </div>
+
+    <div id="message"></div>
+  </div>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzdxd_Zvqu4SCsQT38DnCgS2VNuSqjKUlIzWGmr02k3oeIMtYwxOLWLrg-R4rsLw0ZG/exec";
+
+    const form = document.getElementById("bukuTamuForm");
+    const messageDiv = document.getElementById("message");
+    const loading = document.getElementById("loading");
+
+    // Set default datetime ke sekarang
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    document.querySelector('input[name="waktukunjungan"]').value = now.toISOString().slice(0, 16);
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      
+      // Tampilkan loading
+      loading.classList.add("active");
+      messageDiv.innerHTML = "";
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify(data)
+      })
+      .then(res => res.text())
+      .then(() => {
+        loading.classList.remove("active");
+        messageDiv.innerHTML = '<div class="success">✅ Data berhasil dikirim! Terima kasih atas kunjungan Anda.</div>';
+        form.reset();
+        
+        // Set ulang waktu ke sekarang
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        document.querySelector('input[name="waktukunjungan"]').value = now.toISOString().slice(0, 16);
+        
+        // Hapus pesan setelah 5 detik
+        setTimeout(() => {
+          messageDiv.innerHTML = "";
+        }, 5000);
+      })
+      .catch(err => {
+        loading.classList.remove("active");
+        messageDiv.innerHTML = '<div class="error">❌ Gagal mengirim data. Silakan coba lagi.</div>';
+        console.error(err);
+        
+        // Hapus pesan error setelah 5 detik
+        setTimeout(() => {
+          messageDiv.innerHTML = "";
+        }, 5000);
+      });
+    });
+  </script>
+</body>
+</html>
